@@ -6,7 +6,7 @@
 
 <br />
 
-### An Open Source Storage Platform
+## An Open Source Storage Platform
 
 When my third-party NAS had failed me, and I lost data, I decided to build my own NAS. Priority for me now was data redundancy at the highest level.
 
@@ -28,7 +28,7 @@ FreeNAS is an open source Network Attached Storage (NAS) platform based on FreeB
 <br />
 <br />
 
-### Hardware Specifications
+## Hardware Specifications
 
 The following section contains the specifications, details, and the configuration of server hardware.
 
@@ -130,7 +130,7 @@ ASUS EAH5450 Silent/DI/512MB
 <br />
 <br />
 
-### Software Procedures
+## Software Procedures
 
 The following section contains step-by-step instructions for maintenance and additional functionality to your FreeNAS server. Some commands to be executed on client machines are for specific operating systems only, i.e. only for Windows, Mac, or Linux.
 
@@ -388,97 +388,91 @@ Disk discovery mode | TimeMachine
 
 The following outlines the steps to synchronise a directory (or entire drive) from your FreeNAS server to the cloud. I use "Amazon Cloud" for my cloud computing and storage.
 
-What is AWS
-
 Amazon Web Services (AWS) is Amazon's cloud platform, which allows you to utilise computing power and storage. AWS offers infrastructure services, including Amazon Elastic Compute Cloud (Amazon EC2), Amazon Simple Storage Service (S3), and more.
 
 Amazon Elastic Compute Cloud (Amazon EC2) is a web service that provides computing capacity in the cloud. You can create a virtual Amazon EC2 environment with most operating systems, services, databases, and application platform stack for your hosted application.
 
-Warning: If used incorrectly, you can overwrite and/or lose data.
+**Warning**: If used incorrectly, you can overwrite and/or lose data.
 
-Steps:
-
+Steps:  
 1. Sign up for Amazon EC2
 
-        http://aws.amazon.com/
+ http://aws.amazon.com/
 
 Note: When signing up for Amazon Elastic Compute Cloud (Amazon EC2), this will automatically sign you up for:
 
-    Amazon Simple Storage Service (Amazon S3), and
-    Amazon Virtual Private Cloud (Amazon VPC).
+- Amazon Simple Storage Service (Amazon S3), and
+- Amazon Virtual Private Cloud (Amazon VPC).
 
-2. AWS Management Console
+2. AWS Management Console  
+Go to the Amazon EC2 tab
+Select Launch Instance button
+Choose an Amazon Machine Image (AMI). A packaged-up environment to setup & boot the instance, e.g. Basic 64-bit Amazon Linux AMI
+Create a Key Pair. This is the security credential for authentication for the instance being created (do not lose this).
+Create a Security Group. This will define firewall rules to your instance, e.g. allow ssh under Linux, RDC under Windows...
 
-    Go to the Amazon EC2 tab
-    Select Launch Instance button
-    Choose an Amazon Machine Image (AMI). A packaged-up environment to setup & boot the instance, e.g. Basic 64-bit Amazon Linux AMI
-    Create a Key Pair. This is the security credential for authentication for the instance being created (do not lose this).
-    Create a Security Group. This will define firewall rules to your instance, e.g. allow ssh under Linux, RDC under Windows...
-
-3. Secure the X.509 certificate
-
+3. Secure the X.509 certificate  
 This is the Key Pair generated during the creation of the instance (above step).
+- Copy this certificate to your FreeNAS box
+- Use chmod to make your private key not publicly viewable.
 
-    Copy this certificate to your FreeNAS box
-    Use chmod to make your private key not publicly viewable.
-
+```bash
 chmod 400 myuser.pem
+```
 
 4. Verify public/private key ssh authentication
 
+```bash
 ssh -i myuser.pem ec2-user@[your-public-dns]amazonaws.com
+```
 
 Notes:
-
-    Public DNS can be obtained from the AWS Management Console, EC2 Instance
-    Some AMIs let you log in as root
-    To run a command as root, prefix the command with sudo
+- Public DNS can be obtained from the AWS Management Console, EC2 Instance
+- Some AMIs let you log in as root
+- To run a command as root, prefix the command with sudo
 
 5. Create a sync script
 
-Create an empty file
-
+```bash
+# Create an empty file
 vi synccloudscript
 
-Add content
-
+# Add content
 rsync -vrazuPe "ssh -i myuser.pem -l root" /source/dir/ ec2-user@[your-public-dns].compute-1.amazonaws.com:/home/ec2-user/target/dir/
 
-Save & quit   
-
+# Save & quit
 :wq
 
-Make the file executable
-
+# Make the file executable
 chmod +x synccloudscript
+```
 
-6. Test the sync script
+6. Test the sync script      
 
-       
-
+```bash
 ./synccloudscript
+```
 
 7. Schedule the sync script using Cron
 
 Add an entry to your user's crontab file
-
+```bash
 crontab -e
 
-With content, e.g. run ever day at 11:00pm
+# With content, e.g. run ever day at 11:00pm
+# minute(0-59)     hour(0-23)    dom(1-31)    month(1-12)    weekday(0-6)    cmd
+  0                23            *            *              *               /mnt/zpool1/home/synccloudscript
 
-#minute(0-59)    hour(0-23)    dom(1-31)    month(1-12)    weekday(0-6)    cmd
-
-     0                23            *            *              *               /mnt/zpool1/home/synccloudscript
-
-Save & quit
-
+# Save & quit
 :wq
 
-Verify (display) the current crontab
-
+# Verify (display) the current crontab
 crontab -l
+```
 
-Zettabyte File System
+<br>
+
+**Zettabyte File System**
 
 ZFS is a 128-bit file system and logical volume manager written from the ground-up to provide data integrity, immense scalability, with simple administration. Data integrity is a high priority for ZFS, to protect user's data (on disk) from silent corruption. ZFS filesystems are built on virtual storage pools called zpools, where traditional file systems would reside on a single disk and require a volume manager to use more than one disk.
 
@@ -488,47 +482,56 @@ Commands
 
 Identify the available storage pool and file system space
 
+```bash
 zpool list
+```
 
 Get detail status of storage pool
-
+```bash
 zpool status -v
+```
 
 Check data integrity, i.e. explicit scrubbing of all data within the pool
-
+```bash
 zpool scrub zpool1
+```
 
 Show storage pool format version and features supported
-
+```bash
 zpool upgrade -v
+```
 
 Show IO statistics for a storage pool
-
+```bash
 zpool iostat 5
+```
 
 Create a storage pool
-
+```bash
 zpool create zpool1 /disk1 /disk2
+```
 
 Destroy a storage pool
-
+```bash
 zpool destory zpool1
+```
 
 Attach a device to the storage pool 
-
+```bash
 zpool attach zpool1 /disk1 /disk3
+```
 
 Detach a device from the storage pool
-
+```bash
 zpool detach zpool1 /disk1
+```
 
 Import (an exported) storage pool
-
+```bash
 zpool import -d / zpool1
+```
 
 Export a storage pool
-
+```bash
 zpool export zpool1
-
-Image used with permission from Fractal Design
-
+```
