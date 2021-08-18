@@ -394,9 +394,7 @@ Amazon Elastic Compute Cloud (Amazon EC2) is a web service that provides computi
 
 Steps:
 
-1. Sign up for Amazon EC2:
-
-http://aws.amazon.com/  
+1. Sign up for Amazon EC2: http://aws.amazon.com/  
 Note: When signing up for Amazon Elastic Compute Cloud (Amazon EC2), this will automatically sign you up for:  
 - Amazon Simple Storage Service (Amazon S3), and
 - Amazon Virtual Private Cloud (Amazon VPC).
