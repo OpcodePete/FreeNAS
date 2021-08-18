@@ -382,7 +382,7 @@ Disk discovery mode | TimeMachine
 
 <br />
 
-### Cloud storage
+### Cloud storage (at AWS)
 
 The following outlines the steps to synchronise a directory (or entire drive) from your FreeNAS server to the cloud. I use "Amazon Cloud" for my cloud computing and storage.
 
@@ -393,27 +393,23 @@ Amazon Elastic Compute Cloud (Amazon EC2) is a web service that provides computi
 **Warning**: If used incorrectly, you can overwrite and/or lose data.
 
 Steps:  
-1. Sign up for Amazon EC2
+1. Sign up for Amazon EC2: http://aws.amazon.com/
 
- http://aws.amazon.com/
-
-Note: When signing up for Amazon Elastic Compute Cloud (Amazon EC2), this will automatically sign you up for:
-
+Note: When signing up for Amazon Elastic Compute Cloud (Amazon EC2), this will automatically sign you up for:  
 - Amazon Simple Storage Service (Amazon S3), and
 - Amazon Virtual Private Cloud (Amazon VPC).
 
 2. AWS Management Console  
-Go to the Amazon EC2 tab
-Select Launch Instance button
-Choose an Amazon Machine Image (AMI). A packaged-up environment to setup & boot the instance, e.g. Basic 64-bit Amazon Linux AMI
-Create a Key Pair. This is the security credential for authentication for the instance being created (do not lose this).
-Create a Security Group. This will define firewall rules to your instance, e.g. allow ssh under Linux, RDC under Windows...
+ Go to the Amazon EC2 tab
+ Select Launch Instance button
+ Choose an Amazon Machine Image (AMI). A packaged-up environment to setup & boot the instance, e.g. Basic 64-bit Amazon Linux AMI
+ Create a Key Pair. This is the security credential for authentication for the instance being created (do not lose this).
+ Create a Security Group. This will define firewall rules to your instance, e.g. allow ssh under Linux, RDC under Windows...
 
 3. Secure the X.509 certificate  
-This is the Key Pair generated during the creation of the instance (above step).
-- Copy this certificate to your FreeNAS box
-- Use chmod to make your private key not publicly viewable.
-
+ This is the Key Pair generated during the creation of the instance (above step).
+ - Copy this certificate to your FreeNAS box
+ - Use chmod to make your private key not publicly viewable.
 ```bash
 chmod 400 myuser.pem
 ```
@@ -424,10 +420,10 @@ chmod 400 myuser.pem
 ssh -i myuser.pem ec2-user@[your-public-dns]amazonaws.com
 ```
 
-Notes:
-- Public DNS can be obtained from the AWS Management Console, EC2 Instance
-- Some AMIs let you log in as root
-- To run a command as root, prefix the command with sudo
+ Notes:
+ - Public DNS can be obtained from the AWS Management Console, EC2 Instance
+ - Some AMIs let you log in as root
+ - To run a command as root, prefix the command with sudo
 
 5. Create a sync script
 
@@ -453,20 +449,20 @@ chmod +x synccloudscript
 
 7. Schedule the sync script using Cron
 
-Add an entry to your user's crontab file
-```bash
-crontab -e
+ Add an entry to your user's crontab file
+ ```bash
+ crontab -e
 
-# With content, e.g. run ever day at 11:00pm
-# minute(0-59)     hour(0-23)    dom(1-31)    month(1-12)    weekday(0-6)    cmd
-  0                23            *            *              *               /mnt/zpool1/home/synccloudscript
+ # With content, e.g. run ever day at 11:00pm
+ # minute(0-59)     hour(0-23)    dom(1-31)    month(1-12)    weekday(0-6)    cmd
+   0                23            *            *              *               /mnt/zpool1/home/synccloudscript
 
-# Save & quit
-:wq
+ # Save & quit
+ :wq
 
-# Verify (display) the current crontab
-crontab -l
-```
+ # Verify (display) the current crontab
+ crontab -l
+ ```
 
 <br>
 
@@ -478,7 +474,7 @@ zpool version 15 is supported in FreeBSD 8.2-RELEASE (which is what FreeNAS 8 is
 
 **Commands**
 
-Identify the available storage pool and file system space  
+Identify the available storage pool and file system space
 ```bash
 zpool list
 ```
