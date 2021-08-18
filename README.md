@@ -1,12 +1,12 @@
 # FreeNAS - A home NAS solution
 
-**An Open Source Storage Platform**
+**Important: I had built this in 2011 and have not updated this document since. There will be obsolete information here but the concepts should still remain very useful.**
 
-**Important:** I had built this in 2011 and have not updated this document since. There will be obsolete information here but the concepts should still remain very useful.
+**Disclaimer: Use this document at your own risk. I am not responsible for any damages caused by your use of this document, or caused by errors and/or omissions in this document. If that is not acceptable to you, you may not use this document. By using this document you are accepting this disclaimer.**
 
-**Disclaimer:** Use this document at your own risk. I am not responsible for any damages caused by your use of this document, or caused by errors and/or omissions in this document. If that is not acceptable to you, you may not use this document. By using this document you are accepting this disclaimer.
-    
 <br />
+
+**An Open Source Storage Platform**
 
 When my third-party NAS had failed me, and I lost data, I decided to build my own NAS. Priority for me now was data redundancy at the highest level.
 
@@ -18,16 +18,16 @@ Below are the details of my NAS build...
 
 FreeNAS is an open source Network Attached Storage (NAS) platform based on FreeBSD. It uses an embedded operating system which is compact and can be installed on a USB flashdrive, CompactFlash, or a hard drive. FreeNAS supports the following:
 
-    Protocols: CIFS (samba), NFS, AFP, SSH, rsync, FTP, TFPT, UPnP(DLNA), BitTorrent, iTunes
-    Filesystems supported: ZFS, UFS2
-    Exporting services: iSCSI
-    Directory services: Active Directory, LDAP
-    Monitoring: SNMP, S.M.A.R.T
-    Disk Encryption
+- Protocols: CIFS (samba), NFS, AFP, SSH, rsync, FTP, TFPT, UPnP(DLNA), BitTorrent, iTunes
+- Filesystems supported: ZFS, UFS2
+- Exporting services: iSCSI
+- Directory services: Active Directory, LDAP
+- Monitoring: SNMP, S.M.A.R.T
+- Disk Encryption
 
+<br />
 
-
-Hardware Specifications
+**Hardware Specifications**
 
 The following section contains the specifications, details, and the configuration of server hardware.
 
