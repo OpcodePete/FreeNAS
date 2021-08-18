@@ -392,7 +392,8 @@ Amazon Elastic Compute Cloud (Amazon EC2) is a web service that provides computi
 
 **Warning**: If used incorrectly, you can overwrite and/or lose data.
 
-Steps:  
+Steps:
+
 1. Sign up for Amazon EC2:
 
 http://aws.amazon.com/  
