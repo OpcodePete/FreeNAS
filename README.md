@@ -421,8 +421,7 @@ chmod 400 myuser.pem
 4. Verify public/private key ssh authentication
 ```bash
 ssh -i myuser.pem ec2-user@[your-public-dns]amazonaws.com
-```
-
+```  
    Notes:  
    - Public DNS can be obtained from the AWS Management Console, EC2 Instance
    - Some AMIs let you log in as root
