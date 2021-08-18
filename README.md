@@ -476,10 +476,9 @@ ZFS is a 128-bit file system and logical volume manager written from the ground-
 
 zpool version 15 is supported in FreeBSD 8.2-RELEASE (which is what FreeNAS 8 is built from).
 
-Commands
+**Commands**
 
-Identify the available storage pool and file system space
-
+Identify the available storage pool and file system space  
 ```bash
 zpool list
 ```
