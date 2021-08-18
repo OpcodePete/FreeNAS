@@ -1,10 +1,14 @@
-# FreeNAS
-Open Source Network Attached Storage
+# FreeNAS - A home NAS solution
 
+**An Open Source Storage Platform**
 
-A Home NAS solution: FreeNAS
+**Important:** I had built this in 2011 and have not updated this document since. There will be obsolete information here but the concepts should still remain very useful.
 
-An Open Source Storage Platform
+<br />
+
+**Disclaimer:** Use this document at your own risk. I am not responsible for any damages caused by your use of this document, or caused by errors and/or omissions in this document. If that is not acceptable to you, you may not use this document. By using this document you are accepting this disclaimer.
+
+<br />
 
 When my third-party NAS had failed me, and I lost data, I decided to build my own NAS. Priority for me now was data redundancy at the highest level.
 
@@ -23,7 +27,7 @@ FreeNAS is an open source Network Attached Storage (NAS) platform based on FreeB
     Monitoring: SNMP, S.M.A.R.T
     Disk Encryption
 
-Disclaimer: Use this document at your own risk. I am not responsible for any damages caused by your use of this document, or caused by errors and/or omissions in this document. If that is not acceptable to you, you may not use this document. By using this document you are accepting this disclaimer.
+
 
 Hardware Specifications
 
