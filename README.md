@@ -141,27 +141,21 @@ Steps
 ```bash
 dmesg | tail -20
 ```
-
 3. Insert your destination USB flashdrive  
 4. Find the device name assigned to your USB Flashdrive. E.g. /dev/sdc  
 ```bash
 dmesg | tail -20
 ```
 
-5. Clone media
-
-       
-
+5. Clone media  
+```bash
 dd if=/dev/sdb of=/dev/sdc bs=1M
 
-where
-
-    if = input device/to be read from (i.e. source)
-
-    of = output device/to be written to (i.e. destination)
-
-    bs = blocksize (optional) - determines the speed of the procedure. Larger blocks result in a faster copy
-
+# where
+#  if = input device/to be read from (i.e. source)
+#  of = output device/to be written to (i.e. destination)
+#  bs = blocksize (optional) - determines the speed of the procedure. Larger blocks result in a faster copy
+```
 6. Remove the USB flashdrives
 
 Copy files via Mass Storage
