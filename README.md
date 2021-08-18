@@ -130,23 +130,23 @@ ASUS EAH5450 Silent/DI/512MB
 
 **Software Procedures**
 
-The following section contains step-by-step instructions for maintenance and additional functionality to your FreeNAS server.
+The following section contains step-by-step instructions for maintenance and additional functionality to your FreeNAS server. Some commands to be executed on client machines are for specific operating systems only, i.e. only for Windows, Mac, or Linux.
 
-Some commands to be executed on client machines are for specific operating systems only, i.e. only for Windows, Mac, or Linux.
+**Backup System Disk**  
+dd is a very powerful program under Linux which does a low-level copy and conversion of raw data, i.e. it ignores cylinders, partitions. **Warning**: Incorrectly assigning (i.e. reversing) devices to the if and of parameters can possibly result in the loss of some or all of your data on the source device!
 
-Backup System Diskdd is a very powerful program under Linux which does a low-level copy and conversion of raw data, i.e. it ignores cylinders, partitions.Warning: Incorrectly assigning (i.e. reversing) devices to the if and of parameters can possibly result in the loss of some or all of your data on the source device!Steps1. Insert your source USB flashdrive
-
-2. Find the device name assigned to your USB Flashdrive. E.g. /dev/sdb
-
+Steps  
+1. Insert your source USB flashdrive  
+2. Find the device name assigned to your USB Flashdrive. E.g. /dev/sdb  
+```bash
 dmesg | tail -20
+```
 
-3. Insert your destination USB flashdrive
-
-4. Find the device name assigned to your USB Flashdrive. E.g. /dev/sdc
-
-       
-
+3. Insert your destination USB flashdrive  
+4. Find the device name assigned to your USB Flashdrive. E.g. /dev/sdc  
+```bash
 dmesg | tail -20
+```
 
 5. Clone media
 
