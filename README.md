@@ -31,59 +31,67 @@ FreeNAS is an open source Network Attached Storage (NAS) platform based on FreeB
 
 The following section contains the specifications, details, and the configuration of server hardware.
 
+<br />
+
 (Actual case used)
 
-Server Specifications
+<img align="left" width="300" src="/images/FractalCase.jpg">
 
-Motherboard
+**Server Specifications**
+
+**Motherboard**
 
 Gigabye GA-H55-USB3 (rev. 2.0)
 
-CPU
+**CPU**
 
 Intel Core i5-760 (Quad) 2.80 GHz
 
-Memory
+**Memory**
 
 16GB | 4x Transcend 4GB 1333MHz DDR3 Non-ECC
 
-Network
+**Network**
 
 Onboard (mobo) RTL8111E chip 1000MB
 
-PSU
+**PSU**
 
 Corsair Progessional Series HX650W
 
-Case
+**Case**
 
 Fractal Design Define R3, Black Pearl
 
-Video
+**Video**
 
 ASUS EAH5450 Silent/DI/512MB
 
-Optical Drive
+**Optical Drive**
 
 Samsung TS-H653 DVD Writer
 
-Operating System
+**Operating System**
 
 FreeNAS-8.0-RELEASE-amd64
 
-Interfaces
+**Interfaces**
 
 eSATA USB 3.0, USB 2.0, Firewire (1394)
 
-Storage Subsystem
+<br />
+<br />
+<br />
 
-System Disk
+**Storage Subsystem**
+
+**System Disk**
 
 Primary: 8GB TDK Gold USB Flashdrive
 
 Secondary: 8GB TDK Platinum USB Flashdrive
 
-Storage Disk
+**Storage Disk**
 
 Config: RAID-Z
 
@@ -93,7 +101,7 @@ Controller: Onboard (mobo) SATA 2.0 Controller
 
 Capacity: 5.9TB
 
-Backup Disk
+**Backup Disk**
 
 Config: UFS2/Hardware Raid-1
 
@@ -103,7 +111,7 @@ Controller: Astrotek PCI-Ex 1 2ch SATA 3.0 Controller
 
 Capacity: 1TB
 
-Extra Disk
+**Extra Disk**
 
 Config: UFS2/Hardware Raid-1
 
@@ -117,7 +125,7 @@ Storage redundancy includes ZFS, H/W Raid-1, and storage to the cloud.
 
 1Motherboard disk controller is SATA 2.0 & limits interface to 3GB/s
 
-Cooling
+**Cooling**
 
 Case fan configuration includes 2x intakes and 1x outtake. Fans used:
 
@@ -135,7 +143,7 @@ Arctic F12 TC
 
 Expansion: Total of 7 fan slots (2x120mm in front, 2x 120/140mm in top, 1x120mm in back, 1x 120/140mm in side panel, 1x 120/140mm in bottom)
 
-Silent Computing
+**Silent Computing**
 
 Define R3, Black Pearl
 
@@ -146,6 +154,10 @@ Define R3, Black Pearl
 ASUS EAH5450 Silent/DI/512MB
 
     ASUS exclusive 0dB thermal solution
+
+<br />
+<br />
+<br />
 
 Software Procedures
 
