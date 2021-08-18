@@ -6,7 +6,7 @@
 
 <br />
 
-**An Open Source Storage Platform**
+### An Open Source Storage Platform
 
 When my third-party NAS had failed me, and I lost data, I decided to build my own NAS. Priority for me now was data redundancy at the highest level.
 
@@ -26,8 +26,9 @@ FreeNAS is an open source Network Attached Storage (NAS) platform based on FreeB
 - Disk Encryption
 
 <br />
+<br />
 
-**Hardware Specifications**
+### Hardware Specifications
 
 The following section contains the specifications, details, and the configuration of server hardware.
 
@@ -127,8 +128,9 @@ ASUS EAH5450 Silent/DI/512MB
 - ASUS exclusive 0dB thermal solution
 
 <br />
+<br />
 
-**Software Procedures**
+### Software Procedures
 
 The following section contains step-by-step instructions for maintenance and additional functionality to your FreeNAS server. Some commands to be executed on client machines are for specific operating systems only, i.e. only for Windows, Mac, or Linux.
 
