@@ -4,10 +4,8 @@
 
 **Important:** I had built this in 2011 and have not updated this document since. There will be obsolete information here but the concepts should still remain very useful.
 
-<br />
-
 **Disclaimer:** Use this document at your own risk. I am not responsible for any damages caused by your use of this document, or caused by errors and/or omissions in this document. If that is not acceptable to you, you may not use this document. By using this document you are accepting this disclaimer.
-
+    
 <br />
 
 When my third-party NAS had failed me, and I lost data, I decided to build my own NAS. Priority for me now was data redundancy at the highest level.
