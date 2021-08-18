@@ -394,22 +394,26 @@ Amazon Elastic Compute Cloud (Amazon EC2) is a web service that provides computi
 
 Steps:
 
-1. Sign up for Amazon EC2: http://aws.amazon.com/  
-Note: When signing up for Amazon Elastic Compute Cloud (Amazon EC2), this will automatically sign you up for:  
-- Amazon Simple Storage Service (Amazon S3), and
-- Amazon Virtual Private Cloud (Amazon VPC).
+1. Sign up for Amazon EC2:
 
-2. AWS Management Console  
-Go to the Amazon EC2 tab
-Select Launch Instance button
-Choose an Amazon Machine Image (AMI). A packaged-up environment to setup & boot the instance, e.g. Basic 64-bit Amazon Linux AMI
-Create a Key Pair. This is the security credential for authentication for the instance being created (do not lose this).
-Create a Security Group. This will define firewall rules to your instance, e.g. allow ssh under Linux, RDC under Windows...
+   http://aws.amazon.com/  
+   Note: When signing up for Amazon Elastic Compute Cloud (Amazon EC2), this will automatically sign you up for:  
+   - Amazon Simple Storage Service (Amazon S3), and
+   - Amazon Virtual Private Cloud (Amazon VPC).
 
-3. Secure the X.509 certificate  
-This is the Key Pair generated during the creation of the instance (above step).
-- Copy this certificate to your FreeNAS box
-- Use chmod to make your private key not publicly viewable.
+2. AWS Management Console
+
+   - Go to the Amazon EC2 tab
+   - Select Launch Instance button  
+   - Choose an Amazon Machine Image (AMI). A packaged-up environment to setup & boot the instance, e.g. Basic 64-bit Amazon Linux AMI  
+   - Create a Key Pair. This is the security credential for authentication for the instance being created (do not lose this).  
+   - Create a Security Group. This will define firewall rules to your instance, e.g. allow ssh under Linux, RDC under Windows...  
+
+3. Secure the X.509 certificate
+
+   This is the Key Pair generated during the creation of the instance (above step).
+   - Copy this certificate to your FreeNAS box
+   - Use chmod to make your private key not publicly viewable.
 ```bash
 chmod 400 myuser.pem
 ```
@@ -419,10 +423,10 @@ chmod 400 myuser.pem
 ssh -i myuser.pem ec2-user@[your-public-dns]amazonaws.com
 ```
 
-Notes:  
-- Public DNS can be obtained from the AWS Management Console, EC2 Instance
-- Some AMIs let you log in as root
-- To run a command as root, prefix the command with sudo
+   Notes:  
+   - Public DNS can be obtained from the AWS Management Console, EC2 Instance
+   - Some AMIs let you log in as root
+   - To run a command as root, prefix the command with sudo
 
 5. Create a sync script
 
@@ -446,9 +450,9 @@ chmod +x synccloudscript
 ./synccloudscript
 ```
 
-7. Schedule the sync script using Cron
+   - Schedule the sync script using Cron
 
-Add an entry to your user's crontab file
+   Add an entry to your user's crontab file
 ```bash
 crontab -e
 
