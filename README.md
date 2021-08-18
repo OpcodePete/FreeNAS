@@ -134,9 +134,7 @@ ASUS EAH5450 Silent/DI/512MB
 
 The following section contains step-by-step instructions for maintenance and additional functionality to your FreeNAS server. Some commands to be executed on client machines are for specific operating systems only, i.e. only for Windows, Mac, or Linux.
 
-<br />
-
-**Backup System Disk**  
+### Backup System Disk
 dd is a very powerful program under Linux which does a low-level copy and conversion of raw data, i.e. it ignores cylinders, partitions. **Warning**: Incorrectly assigning (i.e. reversing) devices to the if and of parameters can possibly result in the loss of some or all of your data on the source device!
 
 Steps  
@@ -164,7 +162,7 @@ dd if=/dev/sdb of=/dev/sdc bs=1M
 
 <br />
 
-**Copy files via Mass Storage**
+### Copy files via Mass Storage
 
 The following outlines the steps on how to copy data to your FreeNAS server via an external mass storage device.
 
@@ -232,7 +230,7 @@ You may now unplug the USB mass storage drive from your NAS
 
 <br />
 
-**Copy files via rsync over ssh**
+### Copy files via rsync over ssh
 
 The following outlines how to do an ad-hoc copy of a local directory on your PC to a remote directory on your FreeNAS server.  
 Rsync is a copying tool, that can be used to copy to a local or remote machine over any remote shell.  
@@ -261,7 +259,7 @@ I recommend doing a trial run with no changes, include the -n option.
 
 <br />
 
-**Automate backups with rsync over ssh**
+### Automate backups with rsync over ssh
 
 The following outlines the steps to schedule a daily task on your PC to synchronise a local directory to a remote directory on your FreeNAS server.  
 Rsync, Bash, and Cron can be used to build a complete automated backup solution.  
@@ -359,7 +357,7 @@ crontab -l
 ```
 <br />
 
-**Setup Apple Time Machine Backup**
+### Setup Apple Time Machine Backup
 
 FreeNAS supports Apple Time Machine. Time Machine backups can be stored on a local volume, or a dataset.  
 Using a (dedicated) dataset for Time Machine backups allow you to enforce a quota to limit Time Machine from using your entire volume space.
@@ -384,7 +382,7 @@ Disk discovery mode | TimeMachine
 
 <br />
 
-**Storage to the Cloud**
+### Cloud storage
 
 The following outlines the steps to synchronise a directory (or entire drive) from your FreeNAS server to the cloud. I use "Amazon Cloud" for my cloud computing and storage.
 
@@ -472,7 +470,7 @@ crontab -l
 
 <br>
 
-**Zettabyte File System**
+### Zettabyte File System (ZFS)
 
 ZFS is a 128-bit file system and logical volume manager written from the ground-up to provide data integrity, immense scalability, with simple administration. Data integrity is a high priority for ZFS, to protect user's data (on disk) from silent corruption. ZFS filesystems are built on virtual storage pools called zpools, where traditional file systems would reside on a single disk and require a volume manager to use more than one disk.
 
