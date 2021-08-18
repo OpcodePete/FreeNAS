@@ -158,7 +158,9 @@ dd if=/dev/sdb of=/dev/sdc bs=1M
 ```
 6. Remove the USB flashdrives
 
-Copy files via Mass Storage
+<br />
+
+**Copy files via Mass Storage**
 
 The following outlines the steps on how to copy data to your FreeNAS server via an external mass storage device.
 
@@ -168,247 +170,217 @@ I use a USB 2.0 mass storage device (NTFS filesystem) to transfer data to my Fre
 
 Note, using an external SATA harddrive here (if you have an available SATA port) would achieve much faster data transfers when compared with USB 2.0.
 
-Warning: If used incorrectly, you can overwrite and/or lose data.
+**Warning**: If used incorrectly, you can overwrite and/or lose data.
 
-Steps
-
+Steps  
 1. Copy the data to your USB mass storage drive (under Windows)
 
+```bash
 robocopy /R:3 /W:1 /Z /E /NP /LOG:F:\Log.txt "E:\MyDirOfLargeFiles" "F:\MyDirOfLargeFiles"
+```
 
 Review the Log.txt file created at the destination. This will report any failures with the copy process.
 
-2. Insert your USB mass storage drive to your NAS
-
+2. Insert your USB mass storage drive to your NAS  
 3. Secure Shell into your NAS
 
-      
-
+```bash
 ssh myuser@192.168.1.2
+```
 
 4. Find the device name assigned to your USB mass storage drive
 
 E.g. /dev/da1
 
+```bash
 dmesg | tail -20
+```
 
 5. Mount the USB mass storage drive
 
-      
-
+```bash
 cd /mnt
+su
+mkdir myextusb
+mount -t ntfs /dev/da1s1 /mnt/myextusb/
 
-     su
-
-     mkdir myextusb
-
-     mount -t ntfs /dev/da1s1 /mnt/myextusb/
-
-To mount FAT32 filesystems, use: -t msdosfs -o large
+# To mount FAT32 filesystems, use: -t msdosfs -o large
+```
 
 Note: Creating a directory under /mnt (or higher) will not be preserved after a reboot, as this is treated as ROM by FreeNAS.
 
 6. Copy the files to your storage drive
 
-       
-
+```bash
 cp -r /mnt/myextusb/MyDirOfLargeFiles /mnt/zpool1/MyDirOfLargeFiles
-
-      
+```
 
 7. Unmount the USB mass storage drive
 
+```bash
 cd
-
 unmount /dev/da1s1
+```
 
 You may now unplug the USB mass storage drive from your NAS
 
 8. Exit Secure Shell
 
-Copy files via rsync over ssh
+<br />
 
-The following outlines how to do an ad-hoc copy of a local directory on your PC to a remote directory on your FreeNAS server.
+**Copy files via rsync over ssh**
 
-Rsync is a copying tool, that can be used to copy to a local or remote machine over any remote shell.
-
+The following outlines how to do an ad-hoc copy of a local directory on your PC to a remote directory on your FreeNAS server.  
+Rsync is a copying tool, that can be used to copy to a local or remote machine over any remote shell.  
 Warning: If used incorrectly, you can overwrite and/or lose data.
 
 rsync command options:
-
  - v: verbose
-
  - r: recursive
-
  - a: archive mode; equal -rlptgoD
-
  - z: compress
-
  - e: remote shell (rsh/ssh)
-
    --delete: delete extraneous files from destination
-
  - u: update, skip files that are new on the destination
-
  - P: keep partially transferred files
-
  - n: dry run
 
 Copy a local directory to a remote directory
 
-   
-
+```bash
 rsync -vrazuPe "ssh -l myuser" /some/local/directory/ 192.168.1.2:/mnt/zpool1/dataset1/some/directory/
+```
 
 To synchronise, include the --delete option (after option -e). This will delete extraneous files from the destination directory.
 
-Recommend doing a trial run with no changes, include the -n option.
+I recommend doing a trial run with no changes, include the -n option.
 
-Automate backups with rsync over ssh
+<br />
 
-The following outlines the steps to schedule a daily task on your PC to synchronise a local directory to a remote directory on your FreeNAS server.
+**Automate backups with rsync over ssh**
 
-Rsync, Bash, and Cron can be used to build a complete automated backup solution.
-
+The following outlines the steps to schedule a daily task on your PC to synchronise a local directory to a remote directory on your FreeNAS server.  
+Rsync, Bash, and Cron can be used to build a complete automated backup solution.  
 Warning: If used incorrectly, you can overwrite and/or lose data.
 
-Steps
-
- 
-
+Steps  
 1. Create a public/private key pair for ssh authentication
 
 (On your PC)
-
-       
-
+```bash
 ssh-keygen -t dsa
+```
 
-Follow the prompts and hit [enter]. Use an empty passphrase so the key can be used without requiring user interaction (i.e. in an automated script).
+Follow the prompts and hit [enter]. Use an empty passphrase so the key can be used without requiring user interaction (i.e. in an automated script). Note: You can use rsa keys (-t rsa)
 
-Note: You can use rsa keys (-t rsa)
+Output  
+Private key is located at $HOME/.ssh/id_dsa  
+Public key is located at $HOME/.ssh/id_dsa.pub
 
-Output
-
-Private key is located at  $HOME/.ssh/id_dsa
-
-Public key is located at   $HOME/.ssh/id_dsa.pub
-
-2. Setup a home directory
-
-(On your FreeNAS server)
-
+2. Setup a home directory  
+(On your FreeNAS server)  
 Create a home directory. Note: Creating a directory in /mnt (or higher) will not be preserved after a reboot, as this is treated as ROM by FreeNAS.
 
-       
-
+```bash
 cd /mnt/zpool1
-
 mkdir home
-
 cd home
-
 mkdir .ssh
+chown root:wheel /mnt/zpool1/home
+```
 
-     chown root:wheel /mnt/zpool1/home
-
-Log into the FreeNAS Web GUI /Account/Users/myuser/
-
+Log into the FreeNAS Web GUI /Account/Users/myuser/  
 Update myuser's Home Directory to the above location, i.e. /mnt/zpool1/home
 
 3. Copy the public key to the FreeNAS server
 
-(On your PC)
-
+(On your PC)  
 Under Linux
-
+```bash
 ssh-copy-id -i ~/.ssh/id_dsa.pub myuser@192.168.1.2
+```
 
 Under Mac       
-
+```bash
 scp ~/.ssh/id_rsa.pub myuser@192.168.1.2:/mnt/zpool1/home/.ssh/authorized_keys
+```
 
 4. Verify public/private key ssh authentication
 
-(On your PC)
-
+(On your PC)  
 Make sure you are logged out of any ssh sessions
 
+```bash
 ssh myuser@192.168.1.2
+```
 
 5. Create a backup script
 
-Create an empty file
-
+```bash
+# Create an empty file
 vi backupscript
 
-Add content
-
+# Add content
 rsync -vrazuPe ssh /some/local/directory/ 192.168.1.2:/mnt/zpool1/dataset1/some/directory/
 
-Save & quit
-
+# Save & quit
 :wq
 
-Make the file executable
-
+# Make the file executable
 chmod +x backupscript
+```
 
 6. Test the backup script
 
-       
-
+```bash
 ./backupscript
+```
 
 7. Schedule the backup script using Cron
 
 Add an entry to your user's crontab file
 
+```bash
 crontab -e
 
-With content, e.g. run ever day at 11:00pm
+# With content, e.g. run ever day at 11:00pm
+# minute(0-59)     hour(0-23)    dom(1-31)    month(1-12)    weekday(0-6)    cmd
+# 0                23            *            *              *               /mnt/zpool1/home/backupscript
 
-#minute(0-59)    hour(0-23)    dom(1-31)    month(1-12)    weekday(0-6)    cmd
-
-0                23            *            *              *               /mnt/zpool1/home/backupscript
-
-Save & quit
-
+# Save & quit
 :wq
 
-Verify (display) the current crontab
-
+# Verify (display) the current crontab
 crontab -l
+```
+<br />
 
-Setup Apple Time Machine Backup
+**Setup Apple Time Machine Backup**
 
-FreeNAS supports Apple Time Machine. Time Machine backups can be stored on a local volume, or a dataset.
-
+FreeNAS supports Apple Time Machine. Time Machine backups can be stored on a local volume, or a dataset.  
 Using a (dedicated) dataset for Time Machine backups allow you to enforce a quota to limit Time Machine from using your entire volume space.
 
 The below steps include sample values.
 
-Steps:
+Steps:  
+1. Create a Dataset  
+ Volume: zpool1  
+ Dataset Name: TimeMachine  
+ Quota: 1000G
 
-1. Create a Dataset
-
- Volume
-
- Dataset Name
-
- Quota
-
- zpool1
-
- TimeMachine
-
- 1000G
-
-2. Add a Share
-
+2. Add a Share  
 The next time you are in Mac OS X, Time Machine should auto-detect this backup disk over the network.
 
-Storage to the Cloud
+Item | Value
+------------ | -------------
+Name | TimeMachine
+Volume Path |  /mnt/zpool1/TimeMachine, i.e. dataset created in above step
+Disk discovery | (check)
+Disk discovery mode | TimeMachine
+
+<br />
+
+**Storage to the Cloud**
 
 The following outlines the steps to synchronise a directory (or entire drive) from your FreeNAS server to the cloud. I use "Amazon Cloud" for my cloud computing and storage.
 
