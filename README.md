@@ -257,58 +257,62 @@ rsync -vrazuPe "ssh -l myuser" /some/local/directory/ 192.168.1.2:/mnt/zpool1/da
 
 ### Automate backups with rsync over ssh
 
-The following outlines the steps to schedule a daily task on your PC to synchronise a local directory to a remote directory on your FreeNAS server.  
-Rsync, Bash, and Cron can be used to build a complete automated backup solution.  
-Warning: If used incorrectly, you can overwrite and/or lose data.
+The following outlines the steps to schedule a daily task on your PC to synchronise a local directory to a remote directory on your FreeNAS server.
+
+Rsync, Bash, and Cron can be used to build a complete automated backup solution.
+
+**Warning**: If used incorrectly, you can overwrite and/or lose data.
 
 Steps  
-1. Create a public/private key pair for ssh authentication
-
+1. Create a public/private key pair for ssh authentication  
 (On your PC)
 ```bash
 ssh-keygen -t dsa
+
+# Notes:
+# 1. Follow the prompts and hit [enter]
+# 2. Use an empty passphrase so the key can be used without requiring user interaction (i.e. in an automated script). 
+# 3. You can use rsa keys (-t rsa)
+#
+# Output  
+# Private key is located at $HOME/.ssh/id_dsa  
+# Public key is located at $HOME/.ssh/id_dsa.pub
 ```
-
-Follow the prompts and hit [enter]. Use an empty passphrase so the key can be used without requiring user interaction (i.e. in an automated script). Note: You can use rsa keys (-t rsa)
-
-Output  
-Private key is located at $HOME/.ssh/id_dsa  
-Public key is located at $HOME/.ssh/id_dsa.pub
 
 2. Setup a home directory  
 (On your FreeNAS server)  
-Create a home directory. Note: Creating a directory in /mnt (or higher) will not be preserved after a reboot, as this is treated as ROM by FreeNAS.
 
 ```bash
+# Create a home directory.
+# Note: Creating a directory in /mnt (or higher) will not be preserved after a reboot, as this is treated as ROM by FreeNAS.
+
 cd /mnt/zpool1
 mkdir home
 cd home
 mkdir .ssh
 chown root:wheel /mnt/zpool1/home
+
+# Log into the FreeNAS Web GUI /Account/Users/myuser/  
+# Update myuser's Home Directory to the above location, i.e. /mnt/zpool1/home
 ```
 
-Log into the FreeNAS Web GUI /Account/Users/myuser/  
-Update myuser's Home Directory to the above location, i.e. /mnt/zpool1/home
+3. Copy the public key to the FreeNAS server  
+(On your PC)
 
-3. Copy the public key to the FreeNAS server
-
-(On your PC)  
-Under Linux
 ```bash
+# Under Linux
 ssh-copy-id -i ~/.ssh/id_dsa.pub myuser@192.168.1.2
-```
 
-Under Mac       
-```bash
+Under Mac
 scp ~/.ssh/id_rsa.pub myuser@192.168.1.2:/mnt/zpool1/home/.ssh/authorized_keys
 ```
 
-4. Verify public/private key ssh authentication
-
+4. Verify public/private key ssh authentication  
 (On your PC)  
-Make sure you are logged out of any ssh sessions
 
 ```bash
+# Make sure you are logged out of any ssh sessions
+
 ssh myuser@192.168.1.2
 ```
 
@@ -336,9 +340,8 @@ chmod +x backupscript
 
 7. Schedule the backup script using Cron
 
-Add an entry to your user's crontab file
-
 ```bash
+# Add an entry to your user's crontab file
 crontab -e
 
 # With content, e.g. run ever day at 11:00pm
@@ -355,16 +358,18 @@ crontab -l
 
 ### Setup Apple Time Machine Backup
 
-FreeNAS supports Apple Time Machine. Time Machine backups can be stored on a local volume, or a dataset.  
+FreeNAS supports Apple Time Machine. Time Machine backups can be stored on a local volume, or a dataset.
+
 Using a (dedicated) dataset for Time Machine backups allow you to enforce a quota to limit Time Machine from using your entire volume space.
 
-The below steps include sample values.
+Steps (below include sample values):  
+1. Create a Dataset
 
-Steps:  
-1. Create a Dataset  
- Volume: zpool1  
- Dataset Name: TimeMachine  
- Quota: 1000G
+Item | Value
+------------ | -------------
+Volume | zpool1  
+Dataset Name | TimeMachine  
+Quota | 1000G
 
 2. Add a Share  
 The next time you are in Mac OS X, Time Machine should auto-detect this backup disk over the network.
@@ -392,24 +397,26 @@ Steps:
 
 1. Sign up for Amazon EC2:
 
-   http://aws.amazon.com/  
-   Note: When signing up for Amazon Elastic Compute Cloud (Amazon EC2), this will automatically sign you up for:  
-   - Amazon Simple Storage Service (Amazon S3), and
-   - Amazon Virtual Private Cloud (Amazon VPC).
+http://aws.amazon.com/  
+Note: When signing up for Amazon Elastic Compute Cloud (Amazon EC2), this will automatically sign you up for:  
+
+- Amazon Simple Storage Service (Amazon S3), and
+- Amazon Virtual Private Cloud (Amazon VPC).
 
 2. AWS Management Console
 
-   - Go to the Amazon EC2 tab
-   - Select Launch Instance button  
-   - Choose an Amazon Machine Image (AMI). A packaged-up environment to setup & boot the instance, e.g. Basic 64-bit Amazon Linux AMI  
-   - Create a Key Pair. This is the security credential for authentication for the instance being created (do not lose this).  
-   - Create a Security Group. This will define firewall rules to your instance, e.g. allow ssh under Linux, RDC under Windows...  
+- Go to the Amazon EC2 tab
+- Select Launch Instance button  
+- Choose an Amazon Machine Image (AMI). A packaged-up environment to setup & boot the instance, e.g. Basic 64-bit Amazon Linux AMI  
+- Create a Key Pair. This is the security credential for authentication for the instance being created (do not lose this).  
+- Create a Security Group. This will define firewall rules to your instance, e.g. allow ssh under Linux, RDC under Windows...  
 
 3. Secure the X.509 certificate
 
-   This is the Key Pair generated during the creation of the instance (above step).
-   - Copy this certificate to your FreeNAS box
-   - Use chmod to make your private key not publicly viewable.
+This is the Key Pair generated during the creation of the instance (above step).
+- Copy this certificate to your FreeNAS box
+- Use chmod to make your private key not publicly viewable.
+
 ```bash
 chmod 400 myuser.pem
 ```
@@ -418,10 +425,10 @@ chmod 400 myuser.pem
 ```bash
 ssh -i myuser.pem ec2-user@[your-public-dns]amazonaws.com
 ```  
-   Notes:  
-   - Public DNS can be obtained from the AWS Management Console, EC2 Instance
-   - Some AMIs let you log in as root
-   - To run a command as root, prefix the command with sudo
+Notes:  
+- Public DNS can be obtained from the AWS Management Console, EC2 Instance
+- Some AMIs let you log in as root
+- To run a command as root, prefix the command with sudo
 
 5. Create a sync script
 
@@ -445,9 +452,10 @@ chmod +x synccloudscript
 ./synccloudscript
 ```
 
-   - Schedule the sync script using Cron
+- Schedule the sync script using Cron
 
-   Add an entry to your user's crontab file
+Add an entry to your user's crontab file
+
 ```bash
 crontab -e
 
