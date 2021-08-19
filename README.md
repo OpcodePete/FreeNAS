@@ -8,13 +8,7 @@
 
 ## An Open Source Storage Platform
 
-When my third-party NAS had failed me, and I lost data, I decided to build my own NAS. Priority for me now was data redundancy at the highest level.
-
-After some research into NAS specific areas, i.e. data integrity, functionality, and flexibility, I decided to go with FreeNAS. It met my requirements!
-
-Supporting both ZFS and H/W Raid-1, a host of functions, stability of BSD, able to interface with Windows, Mac, Linux, and the flexibility to allows *nix scripting.
-
-Below are the details of my NAS build...
+When my third-party NAS failed, I lost data! I then decided to build a NAS but with data redundancy as the highest priority. After alot of research on the specifics of NAS, e.g. data integrity, functionality, flexibility, and cost, I decided to go with FreeNAS. It met all my requirements! Supporting both ZFS and H/W Raid-1, a host of functions, stability of BSD, able to interface with Windows, Mac, Linux, and with the flexibility to allows *nix scripting.
 
 FreeNAS is an open source Network Attached Storage (NAS) platform based on FreeBSD. It uses an embedded operating system which is compact and can be installed on a USB flashdrive, CompactFlash, or a hard drive. FreeNAS supports the following:
 
@@ -30,7 +24,7 @@ FreeNAS is an open source Network Attached Storage (NAS) platform based on FreeB
 
 ## Hardware Specifications
 
-The following section contains the specifications, details, and the configuration of server hardware.
+The following section contains the specifications, details, and the configuration of my server.
 
 <br />
 
@@ -135,7 +129,9 @@ ASUS EAH5450 Silent/DI/512MB
 The following section contains step-by-step instructions for maintenance and additional functionality to your FreeNAS server. Some commands to be executed on client machines are for specific operating systems only, i.e. only for Windows, Mac, or Linux.
 
 ### Backup System Disk
-dd is a very powerful program under Linux which does a low-level copy and conversion of raw data, i.e. it ignores cylinders, partitions. **Warning**: Incorrectly assigning (i.e. reversing) devices to the if and of parameters can possibly result in the loss of some or all of your data on the source device!
+dd is a very powerful program under Linux which does a low-level copy and conversion of raw data, i.e. it ignores cylinders, partitions.
+
+**Warning**: Incorrectly assigning (i.e. reversing) devices to the if and of parameters can possibly result in the loss of some or all of your data on the source device!
 
 Steps  
 1. Insert your source USB flashdrive  
@@ -179,9 +175,9 @@ Steps
 
 ```bash
 robocopy /R:3 /W:1 /Z /E /NP /LOG:F:\Log.txt "E:\MyDirOfLargeFiles" "F:\MyDirOfLargeFiles"
-```
 
-Review the Log.txt file created at the destination. This will report any failures with the copy process.
+# Review the Log.txt file created at the destination. This will report any failures with the copy process.
+```
 
 2. Insert your USB mass storage drive to your NAS  
 3. Secure Shell into your NAS
@@ -190,9 +186,7 @@ Review the Log.txt file created at the destination. This will report any failure
 ssh myuser@192.168.1.2
 ```
 
-4. Find the device name assigned to your USB mass storage drive
-
-E.g. /dev/da1
+4. Find the device name assigned to your USB mass storage drive, e.g. /dev/da1
 
 ```bash
 dmesg | tail -20
@@ -206,10 +200,10 @@ su
 mkdir myextusb
 mount -t ntfs /dev/da1s1 /mnt/myextusb/
 
-# To mount FAT32 filesystems, use: -t msdosfs -o large
+# Notes:
+# 1. To mount FAT32 filesystems, use: -t msdosfs -o large
+# 2. Creating a directory under /mnt (or higher) will not be preserved after a reboot, as this is treated as ROM by FreeNAS.
 ```
-
-Note: Creating a directory under /mnt (or higher) will not be preserved after a reboot, as this is treated as ROM by FreeNAS.
 
 6. Copy the files to your storage drive
 
@@ -222,9 +216,9 @@ cp -r /mnt/myextusb/MyDirOfLargeFiles /mnt/zpool1/MyDirOfLargeFiles
 ```bash
 cd
 unmount /dev/da1s1
-```
 
-You may now unplug the USB mass storage drive from your NAS
+# You may now unplug the USB mass storage drive from your NAS
+```
 
 8. Exit Secure Shell
 
@@ -232,9 +226,11 @@ You may now unplug the USB mass storage drive from your NAS
 
 ### Copy files via rsync over ssh
 
-The following outlines how to do an ad-hoc copy of a local directory on your PC to a remote directory on your FreeNAS server.  
-Rsync is a copying tool, that can be used to copy to a local or remote machine over any remote shell.  
-Warning: If used incorrectly, you can overwrite and/or lose data.
+The following outlines how to do an ad-hoc copy of a local directory on your PC to a remote directory on your FreeNAS server.
+
+Rsync is a copying tool, that can be used to copy to a local or remote machine over any remote shell.
+
+**Warning**: If used incorrectly, you can overwrite and/or lose data.
 
 rsync command options:
  - v: verbose
@@ -251,11 +247,11 @@ Copy a local directory to a remote directory
 
 ```bash
 rsync -vrazuPe "ssh -l myuser" /some/local/directory/ 192.168.1.2:/mnt/zpool1/dataset1/some/directory/
+
+# Notes:
+# 1. To synchronise, include the --delete option (after option -e). This will delete extraneous files from the destination directory
+# 2. To do a trial run with no changes, include the -n option
 ```
-
-To synchronise, include the --delete option (after option -e). This will delete extraneous files from the destination directory.
-
-I recommend doing a trial run with no changes, include the -n option.
 
 <br />
 
